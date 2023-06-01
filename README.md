@@ -36,17 +36,8 @@ During this step we will be "loading" the raw weather data to Snowflake. But "lo
 
 <img src="images/03_load_weather.png" width=800px>
 
-Weather Source is a leading provider of global weather and climate data and their OnPoint Product Suite provides businesses with the necessary weather and climate data to quickly generate meaningful and actionable insights for a wide range of use cases across industries. Let's connect to the `Weather Source LLC: frostbyte` feed from Weather Source in the Snowflake Data Marketplace by following these steps:
-
-* Login to Snowsight
-* Click on the Marketplace link in the left navigation bar
-* Enter "Weather Source LLC: frostbyte" in the search box and click return
-* Click on the "Weather Source LLC: frostbyte" listing tile
-* Click the blue "Get" button
- * Expand the "Options" dialog
- * Change the "Database name" to read "FROSTBYTE_WEATHERSOURCE" (all capital letters)
- * Select the "HOL_ROLE" role to have access to the new database
-* Click on the blue "Get" button
+Weather Source is a leading provider of global weather and climate data and their OnPoint Product Suite provides businesses with the necessary weather and climate data to quickly generate meaningful and actionable insights for a wide range of use cases across industries. 
+For this lab, your sandbox admin has already addedd the `Weather Source LLC: frostbyte` dataset from the Marketplace to your account.
 
 ### Run The Script ###
 Open the `steps/03_load_weather.sql` script in Codespaces from the file Explorer in the left navigation bar, and run the script, which contains the following SQL query.
