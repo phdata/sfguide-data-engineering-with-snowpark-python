@@ -5,10 +5,6 @@ Author:       Jeremiah Hansen
 Last Updated: 1/9/2023
 -----------------------------------------------------------------------------*/
 
-USE ROLE HOL_ROLE;
-USE WAREHOUSE HOL_WH;
-USE DATABASE HOL_DB;
-
 
 -- ----------------------------------------------------------------------------
 -- Step #1: Add new/remaining order data
@@ -16,7 +12,10 @@ USE DATABASE HOL_DB;
 
 USE SCHEMA RAW_POS;
 
-ALTER WAREHOUSE HOL_WH SET WAREHOUSE_SIZE = XLARGE WAIT_FOR_COMPLETION = TRUE;
+SET HOL_WH = CURRENT_WAREHOUSE();
+
+-- TODO: Figure out why this variable doesn't work. 
+-- ALTER WAREHOUSE $HOL_WH SET WAREHOUSE_SIZE = XLARGE WAIT_FOR_COMPLETION = TRUE;
 
 COPY INTO ORDER_HEADER
 FROM @external.frostbyte_raw_stage/pos/order_header/year=2022
@@ -31,7 +30,7 @@ MATCH_BY_COLUMN_NAME = CASE_SENSITIVE;
 -- See how many new records are in the stream (this may be a bit slow)
 --SELECT COUNT(*) FROM HARMONIZED.POS_FLATTENED_V_STREAM;
 
-ALTER WAREHOUSE HOL_WH SET WAREHOUSE_SIZE = XSMALL;
+-- ALTER WAREHOUSE $HOL_WH SET WAREHOUSE_SIZE = XSMALL;
 
 
 -- ----------------------------------------------------------------------------
@@ -74,3 +73,9 @@ ORDER BY START_TIME DESC
 LIMIT 100;
 
 ---*/
+SELECT *
+FROM TABLE(INFORMATION_SCHEMA.TASK_HISTORY(
+    SCHEDULED_TIME_RANGE_START=>DATEADD('DAY',-1,CURRENT_TIMESTAMP()),
+    RESULT_LIMIT => 100))
+ORDER BY SCHEDULED_TIME DESC
+;
