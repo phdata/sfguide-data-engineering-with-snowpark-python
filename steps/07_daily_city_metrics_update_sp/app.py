@@ -36,7 +36,8 @@ def create_daily_city_metrics_table(session):
 
 
 def merge_daily_city_metrics(session):
-    _ = session.sql('ALTER WAREHOUSE HOL_WH SET WAREHOUSE_SIZE = XLARGE WAIT_FOR_COMPLETION = TRUE').collect()
+    current_warehouse = session.sql("SELECT CURRENT_WAREHOUSE()").collect()[0][0]
+    _ = session.sql(f'ALTER WAREHOUSE {current_warehouse} SET WAREHOUSE_SIZE = XLARGE WAIT_FOR_COMPLETION = TRUE').collect()
 
     print("{} records in stream".format(session.table('HARMONIZED.ORDERS_STREAM').count()))
     orders_stream_dates = session.table('HARMONIZED.ORDERS_STREAM').select(F.col("ORDER_TS_DATE").alias("DATE")).distinct()
@@ -89,7 +90,7 @@ def merge_daily_city_metrics(session):
     dcm.merge(daily_city_metrics_stg, (dcm['DATE'] == daily_city_metrics_stg['DATE']) & (dcm['CITY_NAME'] == daily_city_metrics_stg['CITY_NAME']) & (dcm['COUNTRY_DESC'] == daily_city_metrics_stg['COUNTRY_DESC']), \
                         [F.when_matched().update(updates), F.when_not_matched().insert(updates)])
 
-    _ = session.sql('ALTER WAREHOUSE HOL_WH SET WAREHOUSE_SIZE = XSMALL').collect()
+    _ = session.sql(f'ALTER WAREHOUSE {current_warehouse} SET WAREHOUSE_SIZE = XSMALL').collect()
 
 def main(session: Session) -> str:
     # Create the DAILY_CITY_METRICS table if it doesn't exist
