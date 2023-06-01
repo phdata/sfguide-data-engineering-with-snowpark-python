@@ -1,10 +1,3 @@
-/*-----------------------------------------------------------------------------
-Hands-On Lab: Data Engineering with Snowpark
-Script:       01_setup_snowflake.sql
-Author:       Jeremiah Hansen
-Last Updated: 1/1/2023
------------------------------------------------------------------------------*/
-
 
 -- ----------------------------------------------------------------------------
 -- Step #1: Accept Anaconda Terms & Conditions
@@ -27,10 +20,14 @@ GRANT EXECUTE TASK ON ACCOUNT TO ROLE DBA2;
 GRANT MONITOR EXECUTION ON ACCOUNT TO ROLE DBA2;
 GRANT IMPORTED PRIVILEGES ON DATABASE SNOWFLAKE TO ROLE DBA2;
 
-GRANT IMPORTED PRIVILEGES ON DATABASE FROSTBYTE_WEATHERSOURCE TO ROLE DBA2;
 
 -- Databases
 CREATE OR REPLACE DATABASE HOL_DB2;
 GRANT OWNERSHIP ON DATABASE HOL_DB2 TO ROLE DBA2;
+
+-- ----------------------------------------------------------------------------
+-- Step #3: Add Frostbyte Weathersource data to account.
+-- ----------------------------------------------------------------------------
+GRANT IMPORTED PRIVILEGES ON DATABASE FROSTBYTE_WEATHERSOURCE TO ROLE DBA2;
 
 USE ROLE IDENTIFIER($ORIGINAL_ROLE);
