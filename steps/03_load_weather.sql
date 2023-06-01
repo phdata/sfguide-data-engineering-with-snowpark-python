@@ -9,8 +9,6 @@ Last Updated: 1/9/2023
 -- SNOWFLAKE ADVANTAGE: Visual Studio Code Snowflake native extension (PrPr, Git integration)
 
 
-USE ROLE HOL_ROLE;
-USE WAREHOUSE HOL_WH;
 
 
 -- ----------------------------------------------------------------------------
