@@ -1,3 +1,4 @@
+import configparser
 import os
 
 import toml
@@ -17,23 +18,17 @@ def main():
                                  default=os.path.join(os.path.expanduser('~'),
                                                       '.snowsql/config'))
 
-
-    snowsql_config = {'accountname': account_name,
-                      'username': username,
-                      'password': password,
-                      'dbname': db_name,
-                      'rolename': role_name,
-                      'warehousename': warehouse_name,
-                      'connections.dev': {'accountname': account_name,
-                                          'username': username,
-                                          'password': password,
-                                          'dbname': db_name,
-                                          'rolename': role_name,
-                                          'warehousename': warehouse_name}}
+    snowsql_config = configparser.ConfigParser()
+    snowsql_config["connections.dev"] = {
+        'accountname': account_name,
+        'username': username,
+        'password': password,
+        'dbname': db_name,
+        'rolename': role_name,
+        'warehousename': warehouse_name}
     
-    print(toml.dumps(snowsql_config))
     with open(config_location, 'w') as config_file:
-        toml.dump(snowsql_config, config_file,)
+        snowsql_config.write(config_file)
 
 if __name__ == "__main__":
     typer.run(main)
