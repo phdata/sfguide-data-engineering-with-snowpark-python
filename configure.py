@@ -30,5 +30,57 @@ def main():
     with open(config_location, 'w') as config_file:
         snowsql_config.write(config_file)
 
+    toml_configs = {
+        "./steps/05_fahrenheit_to_celsius_udf/app.toml": {
+            'snowsql_config_path': '~/.snowsql/config',
+            'snowsql_connection_name': 'dev',
+            'default': {
+                'input_parameters': '(temp_f float)',
+                'return_type': 'float',
+                'file': 'app.zip',
+                'name': 'fahrenheit_to_celsius_udf',
+                'handler': 'app.main',
+                'execute_as_caller': True},
+            'dev': {
+                'database': db_name,
+                'schema': 'ANALYTICS',
+                'warehouse': warehouse_name,
+                'role': role_name,
+                'overwrite': True}},
+        "./steps/06_orders_update_sp/app.toml": {
+            'snowsql_config_path': '~/.snowsql/config',
+            'snowsql_connection_name': 'dev',
+            'default': {'input_parameters': '()',
+                        'return_type': 'string',
+                        'file': 'app.zip',
+                        'name': 'orders_update_sp',
+                        'handler': 'app.main',
+                        'execute_as_caller': True},
+            'dev': {'database': db_name,
+                    'schema': 'HARMONIZED',
+                    'warehouse': warehouse_name,
+                    'role': role_name,
+                    'overwrite': True}
+        },
+        "./steps/07_daily_city_metrics_update_sp/app.toml": {
+            'snowsql_config_path': '~/.snowsql/config',
+            'snowsql_connection_name': 'dev',
+            'default': {'input_parameters': '()',
+                        'return_type': 'string',
+                        'file': 'app.zip',
+                        'name': 'daily_city_metrics_update_sp',
+                        'handler': 'app.main',
+                        'execute_as_caller': True},
+            'dev': {'database': db_name,
+                    'schema': 'ANALYTICS',
+                    'warehouse': warehouse_name,
+                    'role': role_name,
+                    'overwrite': True}}
+    }
+
+    for filename, config in toml_configs.items():
+        with open(filename, 'w') as f:
+            toml.dump(config, f)
+
 if __name__ == "__main__":
     typer.run(main)
