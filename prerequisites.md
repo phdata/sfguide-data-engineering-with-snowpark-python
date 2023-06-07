@@ -74,10 +74,6 @@ Note: This development can be done on your desktop with VS Code, however Codespa
 Extensions pane in the Codespace.
 - Snowflake extension installed. Search for and install the “Snowflake” extension (from Snowflake) in the
 Extensions pane in the Codespace.
-   - Select the Snowflake icon in the left pane of the Codespace to sign into snowflake extension using
-your snowflake URL then enter your username and password.
-        -  Note: to get the snowflake URL, just as you did for the GitHub secret step; in the Snowflake console click
-on your account name in the lower left, hover over your account, then select Copy account URL.
 - Once you are signed into the Snowflake extension, open a new terminal
 
     <img src="images/prereq/terminal.png" width=400px>
@@ -136,6 +132,12 @@ Lastly, lets test that the connection is successful. To do this we'll run `test_
 python test_connection.py
 ```
 
-If the connection test returns successful, you have completed all the prerequisites for the lab. If it returns an error message, reopen the credentials file that you created at the [Create Snowflake Credentials File](#create-snowflake-credentials-file) step and check the account is correctly formatted and the username and password are correct.
+If the connection test returns successful, you have completed all the prerequisites for the lab. If it returns an error message, repeat the previous step (Configure credentials) step and check the account is correctly formatted and the username and password are correct.
 
+### Sign into Snowflake extension
+Select the Snowflake icon in the left pane of the Codespace to sign into Snowflake extension.  The connection details should be pre-populated in the dropdown.  Click the "Sign in" button and confirm that your database and warehouse show up once signed in. 
+
+ <img src="images/prereq/snowflake_extension.png" width=300px>
+
+### Shutdown codespace
 If you have successfully completed all the steps, congratulations you are ready for the Hands on Lab! If you completed these prerequisites prior to attending the Hands on Lab, you can stop the Codespace in Github where you launched it from, or it will automatically stop after 30 mintues
