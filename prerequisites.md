@@ -1,13 +1,21 @@
 <img src="images/prereq/phData_banner.png" width=1200px>
 
 ## SNOWFLAKE PREREQUISITES
-**You'll need a Snowflake account with a user created with ACCOUNTADMIN permissions.**
-This user will be used to get things set up in Snowflake.
-- It is strongly recommended to sign up for a free 30 day trial Snowflake account for this lab. Once you’ve
-registered, you’ll get an email that will bring you to Snowflake so that you can sign in.
-- **Make sure to Activate your account** and pick a username and password that you will remember. This will
-be important for logging in later on.
-- **Anaconda Terms & Conditions accepted. See Getting Started section in [Third-Party Packages](https://docs.snowflake.com/en/developer-guide/udf/python/udf-python-packages#getting-started).**
+**You will be provisioned a Snowflake account with sufficient permissions to run this lab.**
+The account will have a few things already set up for you:
+* Frostbyte Weathersource data from Snowflake Marketplace
+* Acceptance of terms for Snowflake Anaconda channel
+
+For that account, you will receive credentials and parameters that look like the table below. *Note: these are just examples, not the actual values you will use.*
+
+Parameters | Value
+------------|--------------
+Account | fvb60466.us-east-1
+User | hol_user2
+Password | ****
+Role | hol_dba2
+Warehouse | hol_warehouse2
+Database | hol_db2
 
 ## GITHUB PREREQUISITES
 
@@ -35,9 +43,9 @@ In order for your GitHub Actions workflow to be able to connect to your Snowflak
     SNOWSQL_ACCOUNT | \<myaccount\>
     SNOWSQL_USER | \<myusername\>
     SNOWSQL_PWD | \<mypassword\>
-    SNOWSQL_ROLE | HOL_ROLE
-    SNOWSQL_WAREHOUSE | HOL_WH
-    SNOWSQL_DATABASE | HOL_DB
+    SNOWSQL_ROLE | \<myrole\>
+    SNOWSQL_WAREHOUSE | \<mywarehouse\>
+    SNOWSQL_DATABASE | \<mydatabase\>
 
 - Notes:
     - To get the SNOWSQL_ACCOUNT, in the Snowflake console click on your account name in the lower left, hover over your account, then select Copy account URL.
@@ -74,38 +82,10 @@ on your account name in the lower left, hover over your account, then select Cop
 
     <img src="images/prereq/terminal.png" width=400px>
 
-### Create Snowflake Credentials File
-In the Codespace terminal execute the following commands:
-```
-mkdir ~/.snowsql
-touch ~/.snowsql/config
-```
-
-Now that we've created the file, we can open it in the codespace by navigating to it:
-![image](https://user-images.githubusercontent.com/7671134/234953451-8b78db0b-d02e-44df-b00c-fb9a12754167.png)
-
-In the dialog that opens, type in the path to your config file:
-```
-/home/codespace/.snowsql/config
-```
-<img width="905" alt="image" src="https://user-images.githubusercontent.com/7671134/234953793-c7c30a0b-591b-4d99-b923-36b782ca28ff.png">
 
 
-Add your account details to the config file for snowsql, which are the exact same values used for the Github secrets, be sure to save the file.
 
-Note: we aren’t actually installing or using snowsql, just creating the credentials in the location that the snowpark_utils python file expects them to be, since we are just deploying code to Snowflake and not staging local data.
-
-#### Create Snowsql Credentials File
-```
-[connections.dev]
-accountname = <myaccount>
-username = <myusername>
-password = <mypassword>
-rolename = HOL_ROLE
-warehousename = HOL_WH
-dbname = HOL_DB
-```
-### Create Anaconda Environment and Test Connection
+### Create Anaconda Environment
 This lab will take place inside an Anaconda virtual environment running in the Codespace. You will create and activate an Anaconda environment for this lab using the supplied conda_env.yml file. Run these commands from a terminal in the root of your local forked repository.
 ```
 conda env create -f conda_env.yml
@@ -119,7 +99,37 @@ Once activated you should see `(pysnowpark)` in front of the host name
  
  <img src="images/prereq/activate_pysnowpark.png" width=800px>
 
+### Configure credentials in configuration files
 
+Snowflake credentials for the lab are configured by the `configure.py` script.  
+
+
+The script will write a few files:
+```
+# SnowSQL config (used by VSCode Snowflake Extension and Python scripts)
+/home/codespace/.snowsql/config
+
+# Snow CLI config for step 5
+./steps/05_fahrenheit_to_celsius_udf/app.toml 
+
+# Snow CLI config for step 6
+./steps/06_orders_update_sp/app.toml
+
+# Snow CLI config for step 7
+./steps/07_daily_city_metrics_update_sp/app.toml
+```
+
+Run the script by opening a terminal in VSCode and running the following command:
+```
+python configure.py
+```
+
+Enter the credentials/parameters provided by your lab facilitator as you are prompted in the terminal.  It should look something like this:
+ 
+ <img src="images/prereq/configure_script.png" width=800px>
+
+
+### Test connection
 Lastly, lets test that the connection is successful. To do this we'll run `test_connection.py`
 
 ```
