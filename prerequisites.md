@@ -35,15 +35,16 @@ Note: This development can be done on your desktop with VS Code, however Codespa
 Extensions pane in the Codespace.
 - Snowflake extension installed. Search for and install the “Snowflake” extension (from Snowflake) in the
 Extensions pane in the Codespace.
-- Once you are signed into the Snowflake extension, open a new terminal
-
-    <img src="images/prereq/terminal.png" width=400px>
 
 
 
 
 ### Create Anaconda Environment
-This lab will take place inside an Anaconda virtual environment running in the Codespace. You will create and activate an Anaconda environment for this lab using the supplied conda_env.yml file. Run these commands from a terminal in the root of your local forked repository.
+This lab will take place inside an Anaconda virtual environment running in the Codespace. You will create and activate an Anaconda environment for this lab using the supplied conda_env.yml file.  You'll need to run commands in a terminal, so open a terminal as seen in the screenshot below.
+
+<img src="images/prereq/terminal.png" width=400px>
+
+Run these commands from a terminal in the root of your local forked repository.
 ```
 conda env create -f conda_env.yml
 conda init bash
