@@ -38,7 +38,9 @@ def load_raw_table(session, tname=None, s3dir=None, year=None, schema=None):
 # SNOWFLAKE ADVANTAGE: Warehouse elasticity (dynamic scaling)
 
 def load_all_raw_tables(session):
-    _ = session.sql("ALTER WAREHOUSE HOL_WH SET WAREHOUSE_SIZE = XLARGE WAIT_FOR_COMPLETION = TRUE").collect()
+    current_warehouse = session.sql("SELECT CURRENT_WAREHOUSE()").collect()[0][0]
+
+    _ = session.sql(f"ALTER WAREHOUSE {current_warehouse} SET WAREHOUSE_SIZE = XLARGE WAIT_FOR_COMPLETION = TRUE").collect()
 
     for s3dir, data in TABLE_DICT.items():
         tnames = data['tables']
@@ -53,7 +55,7 @@ def load_all_raw_tables(session):
             else:
                 load_raw_table(session, tname=tname, s3dir=s3dir, schema=schema)
 
-    _ = session.sql("ALTER WAREHOUSE HOL_WH SET WAREHOUSE_SIZE = XSMALL").collect()
+    _ = session.sql(f"ALTER WAREHOUSE {current_warehouse} SET WAREHOUSE_SIZE = XSMALL").collect()
 
 def validate_raw_tables(session):
     # check column names from the inferred schema

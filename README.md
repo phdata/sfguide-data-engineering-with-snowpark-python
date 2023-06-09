@@ -8,6 +8,93 @@ Here is an overview of what we'll build in this lab:
 
 <img src="images/demo_overview.png" width=800px>
 
+## Step 0 – Configure credentials
+
+### Snowflake credentials
+**You will be provisioned a Snowflake account with sufficient permissions to run this lab.**
+The account will have a few things already set up for you:
+* Frostbyte Weathersource data from Snowflake Marketplace
+* Acceptance of terms for Snowflake Anaconda channel
+
+For that account, you will receive credentials and parameters that look like the table below. *Note: these are just examples, not the actual values you will use.*
+
+Parameters | Value
+------------|--------------
+Account | fvb60466.us-east-1
+User | hol_user2
+Password | ****
+Role | hol_dba2
+Warehouse | hol_warehouse2
+Database | hol_db2
+
+### GitHub Actions
+
+In order for your GitHub Actions workflow to be able to connect to your Snowflake account you will need to store your Snowflake credentials in GitHub. Action Secrets in GitHub are used to securely store values/variables which will be used in your CI/CD pipelines. In this step, we will create secrets for each of the parameters.
+
+- From the repository, click on the Settings tab near the top of the page. From the Settings page, click on the "Secrets and variables" then "Actions" tab in the left-hand navigation. The Actions secrets should be selected. For each secret listed below click on "New repository secret" near the top right and enter the name given below along with the appropriate value (adjusting as appropriate).
+
+    Secret Name | Secret Value
+    ------------|--------------
+    SNOWSQL_ACCOUNT | \<myaccount\>
+    SNOWSQL_USER | \<myusername\>
+    SNOWSQL_PWD | \<mypassword\>
+    SNOWSQL_ROLE | \<myrole\>
+    SNOWSQL_WAREHOUSE | \<mywarehouse\>
+    SNOWSQL_DATABASE | \<mydatabase\>
+
+- Notes:
+    - To get the SNOWSQL_ACCOUNT, in the Snowflake console click on your account name in the lower left, hover over your account, then select Copy account URL.
+
+    <img src="images/prereq/get_account.png" width=600px>
+
+    - The account is **identifier.region.cloudprovider** prior to **.snowflakecomputing.com** 
+
+    <img src="images/prereq/account_url.png" width=600px>
+
+### Configure credentials in configuration files
+
+Snowflake credentials for the lab are configured by the `configure.py` script.  
+
+
+The script will write a few files:
+```
+# SnowSQL config (used by VSCode Snowflake Extension and Python scripts)
+/home/codespace/.snowsql/config
+
+# Snow CLI config for step 5
+./steps/05_fahrenheit_to_celsius_udf/app.toml 
+
+# Snow CLI config for step 6
+./steps/06_orders_update_sp/app.toml
+
+# Snow CLI config for step 7
+./steps/07_daily_city_metrics_update_sp/app.toml
+```
+
+Run the script by opening a terminal in VSCode and running the following command:
+```
+python configure.py
+```
+
+Enter the credentials/parameters provided by your lab facilitator as you are prompted in the terminal.  It should look something like this:
+ 
+ <img src="images/prereq/configure_script.png" width=800px>
+
+
+### Test connection
+Lastly, lets test that the connection is successful. To do this we'll run `test_connection.py`
+
+```
+python test_connection.py
+```
+
+If the connection test returns successful, you have completed all the prerequisites for the lab. If it returns an error message, repeat the previous step (Configure credentials) step and check the account is correctly formatted and the username and password are correct.
+
+### Sign into Snowflake extension
+Select the Snowflake icon in the left pane of the Codespace to sign into Snowflake extension.  The connection details should be pre-populated in the dropdown.  Click the "Sign in" button and confirm that your database and warehouse show up once signed in. 
+
+ <img src="images/prereq/snowflake_extension.png" width=300px>
+ 
 ## Step 1 - Setup Snowflake
 
 This step will create the necessary role, warehouse, database, and schema for the hands-on lab. We will create 4 schemas for our data maturity model; external, RAW_POS, RAW_CUSTOMER, HARMONIZED, and ANALYTICS.
@@ -36,17 +123,8 @@ During this step we will be "loading" the raw weather data to Snowflake. But "lo
 
 <img src="images/03_load_weather.png" width=800px>
 
-Weather Source is a leading provider of global weather and climate data and their OnPoint Product Suite provides businesses with the necessary weather and climate data to quickly generate meaningful and actionable insights for a wide range of use cases across industries. Let's connect to the `Weather Source LLC: frostbyte` feed from Weather Source in the Snowflake Data Marketplace by following these steps:
-
-* Login to Snowsight
-* Click on the Marketplace link in the left navigation bar
-* Enter "Weather Source LLC: frostbyte" in the search box and click return
-* Click on the "Weather Source LLC: frostbyte" listing tile
-* Click the blue "Get" button
- * Expand the "Options" dialog
- * Change the "Database name" to read "FROSTBYTE_WEATHERSOURCE" (all capital letters)
- * Select the "HOL_ROLE" role to have access to the new database
-* Click on the blue "Get" button
+Weather Source is a leading provider of global weather and climate data and their OnPoint Product Suite provides businesses with the necessary weather and climate data to quickly generate meaningful and actionable insights for a wide range of use cases across industries. 
+For this lab, your sandbox admin has already addedd the `Weather Source LLC: frostbyte` dataset from the Marketplace to your account.
 
 ### Run The Script ###
 Open the `steps/03_load_weather.sql` script in Codespaces from the file Explorer in the left navigation bar, and run the script, which contains the following SQL query.
