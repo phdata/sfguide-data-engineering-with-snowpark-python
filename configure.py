@@ -6,7 +6,6 @@ import typer
 from rich.prompt import Prompt
 
 
-
 def main():
     username = Prompt.ask("Enter your Snowflake username name")
     password = Prompt.ask("Enter your Snowflake password", password=True)
@@ -26,7 +25,11 @@ def main():
         'dbname': db_name,
         'rolename': role_name,
         'warehousename': warehouse_name}
-    
+
+    snowsql_config_dir = os.path.dirname(config_location)
+    if not os.path.isdir(snowsql_config_dir):
+        os.makedirs(snowsql_config_dir)
+
     with open(config_location, 'w') as config_file:
         snowsql_config.write(config_file)
 
@@ -81,6 +84,8 @@ def main():
     for filename, config in toml_configs.items():
         with open(filename, 'w') as f:
             toml.dump(config, f)
+
+    
 
 if __name__ == "__main__":
     typer.run(main)
