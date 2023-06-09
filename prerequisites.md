@@ -1,21 +1,5 @@
 <img src="images/prereq/phData_banner.png" width=1200px>
 
-## SNOWFLAKE PREREQUISITES
-**You will be provisioned a Snowflake account with sufficient permissions to run this lab.**
-The account will have a few things already set up for you:
-* Frostbyte Weathersource data from Snowflake Marketplace
-* Acceptance of terms for Snowflake Anaconda channel
-
-For that account, you will receive credentials and parameters that look like the table below. *Note: these are just examples, not the actual values you will use.*
-
-Parameters | Value
-------------|--------------
-Account | fvb60466.us-east-1
-User | hol_user2
-Password | ****
-Role | hol_dba2
-Warehouse | hol_warehouse2
-Database | hol_db2
 
 ## GITHUB PREREQUISITES
 
@@ -32,29 +16,6 @@ we’ll use later on. So for now enable this workflow by opening your forked rep
 the Actions tab near the top middle of the page, and then clicking on the I understand my workflows, go
 ahead and enable them green button.
 
-### GitHub Actions
-
-In order for your GitHub Actions workflow to be able to connect to your Snowflake account you will need to store your Snowflake credentials in GitHub. Action Secrets in GitHub are used to securely store values/variables which will be used in your CI/CD pipelines. In this step, we will create secrets for each of the parameters.
-
-- From the repository, click on the Settings tab near the top of the page. From the Settings page, click on the "Secrets and variables" then "Actions" tab in the left-hand navigation. The Actions secrets should be selected. For each secret listed below click on "New repository secret" near the top right and enter the name given below along with the appropriate value (adjusting as appropriate).
-
-    Secret Name | Secret Value
-    ------------|--------------
-    SNOWSQL_ACCOUNT | \<myaccount\>
-    SNOWSQL_USER | \<myusername\>
-    SNOWSQL_PWD | \<mypassword\>
-    SNOWSQL_ROLE | \<myrole\>
-    SNOWSQL_WAREHOUSE | \<mywarehouse\>
-    SNOWSQL_DATABASE | \<mydatabase\>
-
-- Notes:
-    - To get the SNOWSQL_ACCOUNT, in the Snowflake console click on your account name in the lower left, hover over your account, then select Copy account URL.
-
-    <img src="images/prereq/get_account.png" width=600px>
-
-    - The account is **identifier.region.cloudprovider** prior to **.snowflakecomputing.com** 
-
-    <img src="images/prereq/account_url.png" width=600px>
 
 ### Create a GitHub Codespace
 
@@ -95,49 +56,6 @@ Once activated you should see `(pysnowpark)` in front of the host name
  
  <img src="images/prereq/activate_pysnowpark.png" width=800px>
 
-### Configure credentials in configuration files
-
-Snowflake credentials for the lab are configured by the `configure.py` script.  
-
-
-The script will write a few files:
-```
-# SnowSQL config (used by VSCode Snowflake Extension and Python scripts)
-/home/codespace/.snowsql/config
-
-# Snow CLI config for step 5
-./steps/05_fahrenheit_to_celsius_udf/app.toml 
-
-# Snow CLI config for step 6
-./steps/06_orders_update_sp/app.toml
-
-# Snow CLI config for step 7
-./steps/07_daily_city_metrics_update_sp/app.toml
-```
-
-Run the script by opening a terminal in VSCode and running the following command:
-```
-python configure.py
-```
-
-Enter the credentials/parameters provided by your lab facilitator as you are prompted in the terminal.  It should look something like this:
- 
- <img src="images/prereq/configure_script.png" width=800px>
-
-
-### Test connection
-Lastly, lets test that the connection is successful. To do this we'll run `test_connection.py`
-
-```
-python test_connection.py
-```
-
-If the connection test returns successful, you have completed all the prerequisites for the lab. If it returns an error message, repeat the previous step (Configure credentials) step and check the account is correctly formatted and the username and password are correct.
-
-### Sign into Snowflake extension
-Select the Snowflake icon in the left pane of the Codespace to sign into Snowflake extension.  The connection details should be pre-populated in the dropdown.  Click the "Sign in" button and confirm that your database and warehouse show up once signed in. 
-
- <img src="images/prereq/snowflake_extension.png" width=300px>
 
 ### Shutdown codespace
 If you have successfully completed all the steps, congratulations you are ready for the Hands on Lab! If you completed these prerequisites prior to attending the Hands on Lab, you can stop the Codespace in Github where you launched it from, or it will automatically stop after 30 mintues
