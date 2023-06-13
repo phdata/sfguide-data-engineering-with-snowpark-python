@@ -9,11 +9,11 @@ from rich.prompt import Prompt
 def main():
     username = Prompt.ask("Enter your Snowflake username name")
     password = Prompt.ask("Enter your Snowflake password", password=True)
-    account_name = Prompt.ask("Enter the Snowflake account you will use (e.g. fvb60466.us-east-1)")
+    account_name = Prompt.ask("Enter the Snowflake account you will use (e.g. fvb60466.us-east-1.aws)")
     db_name = Prompt.ask("Enter the name of your Snowflake database")
     role_name = Prompt.ask("Enter the name of your Snowflake role")
     warehouse_name = Prompt.ask("Enter the name of your Snowflake warehouse")
-    config_location = Prompt.ask("Enter the location of your SnowSQL config",
+    config_location = Prompt.ask("Press Enter/Return to use default location, otherwise enter the location of your SnowSQL config",
                                  default=os.path.join(os.path.expanduser('~'),
                                                       '.snowsql/config'))
 
