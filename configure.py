@@ -9,7 +9,7 @@ from rich.prompt import Prompt
 def main():
     username = Prompt.ask("Enter your Snowflake username name")
     password = Prompt.ask("Enter your Snowflake password", password=True)
-    account_name = Prompt.ask("Enter the Snowflake account you will use (e.g. fvb60466.us-east-1.aws)")
+    account_name = Prompt.ask("Enter the Snowflake account you will use (e.g. fvb60466.us-east-1)")
     db_name = Prompt.ask("Enter the name of your Snowflake database")
     role_name = Prompt.ask("Enter the name of your Snowflake role")
     warehouse_name = Prompt.ask("Enter the name of your Snowflake warehouse")
