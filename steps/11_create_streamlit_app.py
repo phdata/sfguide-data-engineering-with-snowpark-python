@@ -19,7 +19,7 @@ def get_data():
             , date_part(month, date) as month
             , round(avg(avg_temperature_fahrenheit),0) as monthly_avg_temp_fahrenheit
             , round(avg(avg_precipitation_inches),0) as monthly_avg_precip_inches
-        from HOL_DB.ANALYTICS.DAILY_CITY_METRICS
+        from analytics.daily_city_metrics
         group by 1,2
         order by 1,2
     )
@@ -33,7 +33,7 @@ def get_data():
             , avg_temperature_fahrenheit as temp_fahrenheit
             , avg_precipitation_inches as precip_inches
             , iff(precip_inches > 0, '🌧️', '☀️') as precip_ind
-        from HOL_DB.ANALYTICS.DAILY_CITY_METRICS
+        from analytics.daily_city_metrics
     )
     , final as(
         select
